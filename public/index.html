@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Project - MQTT</title>
+    <meta name="description" content="A site for the course IOTAP" />
+    <meta name="author" content="SitePoint" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
+    crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="stylesheet/style.css"/>
+  </head>
+
+  <body onload="fetchMessage()" class="d-flex flex-column h-100">
+    <main role="main" class="flex-shrink-0">
+      <div class="container">
+        <h1 class="mt-5">Enter Message</h1>
+        <form action="/api/send" method="POST">
+          <div class="input-group">
+            <input type="text" class="form-control" name="messageText"/>
+            <span class="input-group-btn">
+              <button class="action-btn btn btn-primary" type="submit">Submit</button>  
+            </span>
+          </div>
+        </form>
+        <p class="lead">Current Topic: <span class="currentTopic"></span></p>
+        <div class="alert alert-info animate__animated animate__fadeInDown" id="lampStatus" role="alert">
+          <h4 class="alert-heading">
+            Loading... <span class="message alert-link"></span></p>
+          </h4>
+        </div>
+      </div>
+    </main>
+  </body>
+  <script type='text/javascript' src="./connection.js"></script>
+  <script defer>
+    setInterval(() => {
+      if (!fetchMessage()) {
+        return;
+      } else {
+        fetchMessage()
+      }
+    }, 1000);
+  </script>
+</html>
