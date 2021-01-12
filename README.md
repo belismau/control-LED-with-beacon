@@ -10,7 +10,7 @@ This project is tested on a **Raspberry Pi 4**.
 
 ```$ cd control-LED-with-beacon```
 
-In the end, download all dependencies (**body-parser, express and mqtt**):
+Finally, download all dependencies (**body-parser, express and mqtt**):
 
 ```$ npm install``` 
 
