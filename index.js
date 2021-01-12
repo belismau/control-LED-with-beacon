@@ -22,11 +22,11 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // variable message is set to false ("do not turn the lamp on")
 var message = false
 
-// When the scanner finds our iBeacon
+// Trigged when the scanner finds our iBeacon
 scanner.onadvertisement = (ad) => {
   if (ad.iBeacon.uuid == "D617BE7A-798B-4898-BF22-A3DFF2AEC6AA") {
     scanner.stopScan()
-    console.log('Found iBaecon!')
+    console.log('Found your iBaecon!')
     message = true
   }
 };
@@ -46,7 +46,7 @@ app.get("/api/messages", (req, res) => {
   setTimeout(() => {
     scanner.stopScan()
     console.log("Sending message: " + message)
-    // SEND VARIABLE "message" WITH MQTT
+    // SEND VARIABLE "message" WITH MQTT here...
   }, 1000);
 })
 
