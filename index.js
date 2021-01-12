@@ -1,9 +1,13 @@
 const express = require("express");
 const bodyParser = require("body-parser")
 const MqttHandler = require("./src/MqttHandler");
+const BeaconScanner = require("node-beacon-scanner");
 
 const app = express();
 const port = process.env.PORT || 8080;
+
+// Creates a new instance of the BeaconScanner class
+const scanner = new BeaconScanner();
 
 // Creates a new instance of the MqttHandler class
 let client = new MqttHandler();
@@ -14,6 +18,19 @@ app.use(express.static('public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
+// Message to send back with MQTT
+// variable message is set to false ("do not turn the lamp on")
+var message = false
+
+// When the scanner finds our iBeacon
+scanner.onadvertisement = (ad) => {
+  if (ad.iBeacon.uuid == "D617BE7A-798B-4898-BF22-A3DFF2AEC6AA") {
+    scanner.stopScan()
+    console.log('Found iBaecon!')
+    message = true
+  }
+};
+
 // Receives all messages from the subscribed topic
 app.get("/api/messages", (req, res) => {
   res.status(200).send({
@@ -21,6 +38,16 @@ app.get("/api/messages", (req, res) => {
     topic: client.topic
   });
   res.end();
+
+  // Scan to find our iBeacon
+  scanner.startScan()
+
+  // Sending message after 1 sec of searching.
+  setTimeout(() => {
+    scanner.stopScan()
+    console.log("Sending message: " + message)
+    // SEND VARIABLE "message" WITH MQTT
+  }, 1000);
 })
 
 // Uploads a new message to the subscribed topic

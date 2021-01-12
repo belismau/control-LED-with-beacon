@@ -1,6 +1,8 @@
 # Control LED with beacon
 
-Turn on/off LED lights with ```Arduino``` if beacon is in range using MQTT messaging protocol.
+Turn on/off LED lights with **Arduino** if beacon is in range using **MQTT** messaging protocol.
+
+This project is tested on a **Raspberry Pi 4**.
 
 ## Installation
 
@@ -8,7 +10,9 @@ Turn on/off LED lights with ```Arduino``` if beacon is in range using MQTT messa
 
 ```$ cd control-LED-with-beacon```
 
-```$ npm install``` to download all the dependencies (**body-parser, express and mqtt**)
+In the end, download all dependencies (**body-parser, express and mqtt**):
+
+```$ npm install``` 
 
 ## Run
 
