@@ -10,12 +10,32 @@ This project is tested on a **Raspberry Pi 4**.
 
 ```$ cd control-LED-with-beacon```
 
-Finally, download all dependencies (**body-parser, express and mqtt**):
+Download dependencies (**body-parser, express and mqtt**):
 
 ```$ npm install``` 
 
+Install **bluetooth-hci-socket**:
+
+```$ cd ~```
+```$ git clone https://github.com/noble/node-bluetooth-hci-socket```
+```$ cd node-bluetooth-hci-socket```
+```$ npm install```
+
+Install and test **noble**:
+
+```$ cd ~```
+```$ git clone https://github.com/noble/noble```
+```$ cd noble```
+```$ npm install```
+```$ cd examples/```
+```$ sudo node advertisement-discovery.js```
+
+Install **node-beacon-scanner**:
+
+```$ npm install node-beacon-scanner```
+
 ## Run
 
-```$ node index.js```
+```$ sudo node index.js```
 
 You will find the web application on **localhost:8080** or **localhost:5000** depending on the port.

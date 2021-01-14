@@ -11,7 +11,7 @@ class MqttHandler {
     this.username = "jgwvowcq";
     this.password = "e_ERtXdyauht";
     this.message = '';
-    this.topic = 'grupp3Topic';
+    this.topic = 'grupp3/lights';
   }
   
   /** Connects the client to the CloudMQTT Broker */
