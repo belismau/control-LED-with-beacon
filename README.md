@@ -17,17 +17,25 @@ Download dependencies (**body-parser, express and mqtt**):
 Install **bluetooth-hci-socket**:
 
 ```$ cd ~```
+
 ```$ git clone https://github.com/noble/node-bluetooth-hci-socket```
+
 ```$ cd node-bluetooth-hci-socket```
+
 ```$ npm install```
 
 Install and test **noble**:
 
 ```$ cd ~```
+
 ```$ git clone https://github.com/noble/noble```
+
 ```$ cd noble```
+
 ```$ npm install```
+
 ```$ cd examples/```
+
 ```$ sudo node advertisement-discovery.js```
 
 Install **node-beacon-scanner**:
