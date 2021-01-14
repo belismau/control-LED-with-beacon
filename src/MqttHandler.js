@@ -16,7 +16,7 @@ class MqttHandler {
   
   /** Connects the client to the CloudMQTT Broker */
   connectClient() {
-    console.log("Creating instance of MQTTHandler. . .");
+    console.log("\nCreating instance of MQTTHandler. . .");
     this.mqttClient = mqtt.connect(this.host, {
       username: this.username,
       password: this.password,
@@ -24,7 +24,7 @@ class MqttHandler {
 
     this.mqttClient.on("connect", function (e) {
       console.log(e);
-      console.log('Connected to MQTT broker');
+      console.log('\nConnected to MQTT broker');
     });
 
     // Subscribes to a specific topic
@@ -39,13 +39,13 @@ class MqttHandler {
     
     // Emitted after a disconnection.
     this.mqttClient.on("close", () => {
-      console.log("Client disconnected");
+      console.log("\nClient disconnected");
     });
   }
 
   /** Recieves incoming messages from the Cloud MQTT broker */
   onMessageRecieved(topic, message) {
-    console.log("New message recieved:", message.toString())
+    console.log("\nNew message recieved:", message.toString())
     this.message = message.toString();
     this.topic = topic
     return true
@@ -55,7 +55,9 @@ class MqttHandler {
   /** Message gets published and uploaded to the broker
       @param {String} msg Message to publish */
   sendMessage(msg) {
-    this.mqttClient.publish(this.topic, msg);
+    if (this.mqttClient.publish(this.topic, msg)) {
+      console.log('\nNew message published.')
+    }
   }
 }
 

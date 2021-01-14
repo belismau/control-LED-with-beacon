@@ -1,13 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser")
 const MqttHandler = require("./src/MqttHandler");
-const BeaconScanner = require("node-beacon-scanner");
 
 const app = express();
-const port = process.env.PORT || 8080;
-
-// Creates a new instance of the BeaconScanner class
-const scanner = new BeaconScanner();
+const port = 5000;
 
 // Creates a new instance of the MqttHandler class
 let client = new MqttHandler();
@@ -18,19 +14,6 @@ app.use(express.static('public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-// Message to send back with MQTT
-// variable message is set to false ("do not turn the lamp on")
-var message = false
-
-// Trigged when the scanner finds our iBeacon
-scanner.onadvertisement = (ad) => {
-  if (ad.iBeacon.uuid == "D617BE7A-798B-4898-BF22-A3DFF2AEC6AA") {
-    scanner.stopScan()
-    console.log('Found your iBaecon!')
-    message = true
-  }
-};
-
 // Receives all messages from the subscribed topic
 app.get("/api/messages", (req, res) => {
   res.status(200).send({
@@ -38,16 +21,6 @@ app.get("/api/messages", (req, res) => {
     topic: client.topic
   });
   res.end();
-
-  // Scan to find our iBeacon
-  scanner.startScan()
-
-  // Sending message after 1 sec of searching.
-  setTimeout(() => {
-    scanner.stopScan()
-    console.log("Sending message: " + message)
-    // SEND VARIABLE "message" WITH MQTT here...
-  }, 1000);
 })
 
 // Uploads a new message to the subscribed topic
@@ -65,3 +38,55 @@ app.post('/api/send', (req, res) => {
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });
+
+// Beacon Scanner
+
+const BeaconScanner = require("node-beacon-scanner");
+const scanner = new BeaconScanner();
+
+var found = false
+var latestFound;
+var firstTime = true;
+
+function start() {
+    found = false
+    scanner.startScan()
+    setTimeout(() => {
+        scanner.stopScan()
+
+        if (firstTime == true) {
+            if (found == true) {
+              console.log("Beacon connected")
+              client.sendMessage("ON");
+            } else {
+              console.log("Beacon disconnected")
+              client.sendMessage("OFF");
+            }
+        } else {
+            if (latestFound != found) {
+                if (found == true) {
+                  console.log("Beacon connected")
+                  client.sendMessage("ON");
+                } else {
+                  console.log("Beacon disconnected")
+                  client.sendMessage("OFF");
+                }
+            }
+        }
+
+        //console.log(found)
+    
+        latestFound = found
+        firstTime = false
+    }, 1000);
+}
+
+scanner.onadvertisement = (ad) => {
+    if (ad.iBeacon.uuid == "D617BE7A-798B-4898-BF22-A3DFF2AEC6AA") {
+        found = true
+    }
+}
+
+setInterval(() => {
+    start()
+}, 2000);
